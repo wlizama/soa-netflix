@@ -12,16 +12,17 @@ namespace web_api.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class contenido_multimedia_temporadas
+    public partial class temporada
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public contenido_multimedia_temporadas()
+        public temporada()
         {
             this.capitulos = new HashSet<capitulo>();
         }
     
-        public int id_cm_temporada { get; set; }
+        public int id_temporada { get; set; }
         public Nullable<int> nro_temporada { get; set; }
+        public string nombre { get; set; }
         public Nullable<int> id_contenido_multimedia { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

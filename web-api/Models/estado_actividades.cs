@@ -16,7 +16,7 @@ namespace web_api.Models
     {
         public int id_estado_actividad { get; set; }
         public Nullable<decimal> volumen { get; set; }
-        public Nullable<decimal> minuto_reproduccion { get; set; }
+        public Nullable<decimal> segundo_reproduccion { get; set; }
         public Nullable<decimal> velocidad { get; set; }
         public Nullable<int> id_perfil_actividad { get; set; }
         public Nullable<int> id_audio { get; set; }

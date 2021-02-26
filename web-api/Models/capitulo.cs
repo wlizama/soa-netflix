@@ -16,10 +16,10 @@ namespace web_api.Models
     {
         public int id_capitulo { get; set; }
         public Nullable<int> nro_capitulo { get; set; }
-        public Nullable<int> id_cm_temporada { get; set; }
+        public Nullable<int> id_temporada { get; set; }
         public Nullable<int> id_video { get; set; }
     
-        public virtual contenido_multimedia_temporadas contenido_multimedia_temporadas { get; set; }
+        public virtual temporada temporada { get; set; }
         public virtual video video { get; set; }
     }
 }

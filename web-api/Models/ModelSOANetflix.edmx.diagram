@@ -4,25 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f7355e12b8464937be8f1f951098124e" Name="Diagram1">
+      <Diagram DiagramId="770b71e810104baa82c550e59c6a1362" Name="Diagram1">
         <EntityTypeShape EntityType="netflixdbModel.audio" Width="1.5" PointX="6" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.capitulo" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.contenido_multimedia_generos" Width="1.5" PointX="11.25" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.contenido_multimedia_temporadas" Width="1.5" PointX="8.25" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.contenido_multimedia_generos" Width="1.5" PointX="8.25" PointY="13.375" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.contenidos_multimedia" Width="1.5" PointX="6" PointY="11.875" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.cuenta_perfiles" Width="1.5" PointX="15.5" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.cuenta" Width="1.5" PointX="13.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.cuenta" Width="1.5" PointX="13.25" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.estado_actividades" Width="1.5" PointX="8.25" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.genero" Width="1.5" PointX="9" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.genero" Width="1.5" PointX="6" PointY="16.5" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.idioma" Width="1.5" PointX="1.5" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.pais" Width="1.5" PointX="8.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.perfil_actividades" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.perfil_favoritos" Width="1.5" PointX="11.25" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.perfil_favoritos" Width="1.5" PointX="11.25" PointY="12.375" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.perfile" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.plane" Width="1.5" PointX="11" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.propietario" Width="1.5" PointX="11" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.plane" Width="1.5" PointX="11" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.propietario" Width="1.5" PointX="11" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.subtitulo" Width="1.5" PointX="3.75" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="netflixdbModel.sysdiagram" Width="1.5" PointX="10.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.sysdiagram" Width="1.5" PointX="2.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="netflixdbModel.temporada" Width="1.5" PointX="8.25" PointY="17.75" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.tipos_contenido_multimedia" Width="1.5" PointX="3.75" PointY="18.625" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.video_audios" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
         <EntityTypeShape EntityType="netflixdbModel.video_subtitulos" Width="1.5" PointX="6" PointY="8.375" IsExpanded="true" />

@@ -13,10 +13,10 @@ namespace web_api.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class netflixdbEntities1 : DbContext
+    public partial class netflixdbEntities : DbContext
     {
-        public netflixdbEntities1()
-            : base("name=netflixdbEntities1")
+        public netflixdbEntities()
+            : base("name=netflixdbEntities")
         {
         }
     
@@ -28,7 +28,6 @@ namespace web_api.Models
         public virtual DbSet<audio> audios { get; set; }
         public virtual DbSet<capitulo> capitulos { get; set; }
         public virtual DbSet<contenido_multimedia_generos> contenido_multimedia_generos { get; set; }
-        public virtual DbSet<contenido_multimedia_temporadas> contenido_multimedia_temporadas { get; set; }
         public virtual DbSet<contenidos_multimedia> contenidos_multimedia { get; set; }
         public virtual DbSet<cuenta_perfiles> cuenta_perfiles { get; set; }
         public virtual DbSet<cuenta> cuentas { get; set; }
@@ -43,6 +42,7 @@ namespace web_api.Models
         public virtual DbSet<propietario> propietarios { get; set; }
         public virtual DbSet<subtitulo> subtitulos { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<temporada> temporadas { get; set; }
         public virtual DbSet<tipos_contenido_multimedia> tipos_contenido_multimedia { get; set; }
         public virtual DbSet<video_audios> video_audios { get; set; }
         public virtual DbSet<video_subtitulos> video_subtitulos { get; set; }

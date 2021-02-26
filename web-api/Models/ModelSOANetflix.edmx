@@ -19,7 +19,7 @@
           </Key>
           <Property Name="id_capitulo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nro_capitulo" Type="int" />
-          <Property Name="id_cm_temporada" Type="int" />
+          <Property Name="id_temporada" Type="int" />
           <Property Name="id_video" Type="int" />
         </EntityType>
         <EntityType Name="contenido_multimedia_generos">
@@ -28,14 +28,6 @@
           </Key>
           <Property Name="id_cm_genero" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_genero" Type="int" />
-          <Property Name="id_contenido_multimedia" Type="int" />
-        </EntityType>
-        <EntityType Name="contenido_multimedia_temporadas">
-          <Key>
-            <PropertyRef Name="id_cm_temporada" />
-          </Key>
-          <Property Name="id_cm_temporada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nro_temporada" Type="int" />
           <Property Name="id_contenido_multimedia" Type="int" />
         </EntityType>
         <EntityType Name="contenidos_multimedia">
@@ -74,7 +66,7 @@
           </Key>
           <Property Name="id_estado_actividad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="volumen" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="minuto_reproduccion" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="segundo_reproduccion" Type="decimal" Precision="18" Scale="2" />
           <Property Name="velocidad" Type="decimal" Precision="18" Scale="2" />
           <Property Name="id_perfil_actividad" Type="int" />
           <Property Name="id_audio" Type="int" />
@@ -176,6 +168,15 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="temporadas">
+          <Key>
+            <PropertyRef Name="id_temporada" />
+          </Key>
+          <Property Name="id_temporada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nro_temporada" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="150" />
+          <Property Name="id_contenido_multimedia" Type="int" />
+        </EntityType>
         <EntityType Name="tipos_contenido_multimedia">
           <Key>
             <PropertyRef Name="id_tcontenido_multimedia" />
@@ -209,7 +210,7 @@
           <Property Name="url_ubicacion" Type="varchar" MaxLength="300" />
           <Property Name="url_imagen" Type="varchar" MaxLength="300" />
           <Property Name="url_trailer" Type="varchar" MaxLength="300" />
-          <Property Name="duracion_minutos" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="duracion_segundos" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <Association Name="FK_audios_idiomas">
           <End Role="idiomas" Type="Self.idiomas" Multiplicity="0..1" />
@@ -224,14 +225,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_capitulos_contenido_multimedia_temporadas">
-          <End Role="contenido_multimedia_temporadas" Type="Self.contenido_multimedia_temporadas" Multiplicity="0..1" />
+          <End Role="temporadas" Type="Self.temporadas" Multiplicity="0..1" />
           <End Role="capitulos" Type="Self.capitulos" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="contenido_multimedia_temporadas">
-              <PropertyRef Name="id_cm_temporada" />
+            <Principal Role="temporadas">
+              <PropertyRef Name="id_temporada" />
             </Principal>
             <Dependent Role="capitulos">
-              <PropertyRef Name="id_cm_temporada" />
+              <PropertyRef Name="id_temporada" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -273,12 +274,12 @@
         </Association>
         <Association Name="FK_contenido_multimedia_temporadas_contenidos_multimedia">
           <End Role="contenidos_multimedia" Type="Self.contenidos_multimedia" Multiplicity="0..1" />
-          <End Role="contenido_multimedia_temporadas" Type="Self.contenido_multimedia_temporadas" Multiplicity="*" />
+          <End Role="temporadas" Type="Self.temporadas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="contenidos_multimedia">
               <PropertyRef Name="id_contenido_multimedia" />
             </Principal>
-            <Dependent Role="contenido_multimedia_temporadas">
+            <Dependent Role="temporadas">
               <PropertyRef Name="id_contenido_multimedia" />
             </Dependent>
           </ReferentialConstraint>
@@ -527,7 +528,6 @@
           <EntitySet Name="audios" EntityType="Self.audios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="capitulos" EntityType="Self.capitulos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="contenido_multimedia_generos" EntityType="Self.contenido_multimedia_generos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="contenido_multimedia_temporadas" EntityType="Self.contenido_multimedia_temporadas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="contenidos_multimedia" EntityType="Self.contenidos_multimedia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cuenta_perfiles" EntityType="Self.cuenta_perfiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cuentas" EntityType="Self.cuentas" Schema="dbo" store:Type="Tables" />
@@ -542,6 +542,7 @@
           <EntitySet Name="propietarios" EntityType="Self.propietarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subtitulos" EntityType="Self.subtitulos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="temporadas" EntityType="Self.temporadas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipos_contenido_multimedia" EntityType="Self.tipos_contenido_multimedia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="video_audios" EntityType="Self.video_audios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="video_subtitulos" EntityType="Self.video_subtitulos" Schema="dbo" store:Type="Tables" />
@@ -551,7 +552,7 @@
             <End Role="audios" EntitySet="audios" />
           </AssociationSet>
           <AssociationSet Name="FK_capitulos_contenido_multimedia_temporadas" Association="Self.FK_capitulos_contenido_multimedia_temporadas">
-            <End Role="contenido_multimedia_temporadas" EntitySet="contenido_multimedia_temporadas" />
+            <End Role="temporadas" EntitySet="temporadas" />
             <End Role="capitulos" EntitySet="capitulos" />
           </AssociationSet>
           <AssociationSet Name="FK_capitulos_videos" Association="Self.FK_capitulos_videos">
@@ -568,7 +569,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_contenido_multimedia_temporadas_contenidos_multimedia" Association="Self.FK_contenido_multimedia_temporadas_contenidos_multimedia">
             <End Role="contenidos_multimedia" EntitySet="contenidos_multimedia" />
-            <End Role="contenido_multimedia_temporadas" EntitySet="contenido_multimedia_temporadas" />
+            <End Role="temporadas" EntitySet="temporadas" />
           </AssociationSet>
           <AssociationSet Name="FK_contenidos_multimedia_tipos_contenido_multimedia" Association="Self.FK_contenidos_multimedia_tipos_contenido_multimedia">
             <End Role="tipos_contenido_multimedia" EntitySet="tipos_contenido_multimedia" />
@@ -673,9 +674,9 @@
           </Key>
           <Property Name="id_capitulo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nro_capitulo" Type="Int32" />
-          <Property Name="id_cm_temporada" Type="Int32" />
+          <Property Name="id_temporada" Type="Int32" />
           <Property Name="id_video" Type="Int32" />
-          <NavigationProperty Name="contenido_multimedia_temporadas" Relationship="Self.FK_capitulos_contenido_multimedia_temporadas" FromRole="capitulos" ToRole="contenido_multimedia_temporadas" />
+          <NavigationProperty Name="temporada" Relationship="Self.FK_capitulos_contenido_multimedia_temporadas" FromRole="capitulos" ToRole="temporadas" />
           <NavigationProperty Name="video" Relationship="Self.FK_capitulos_videos" FromRole="capitulos" ToRole="videos" />
         </EntityType>
         <EntityType Name="contenido_multimedia_generos">
@@ -688,16 +689,6 @@
           <NavigationProperty Name="contenidos_multimedia" Relationship="Self.FK_contenido_multimedia_generos_contenidos_multimedia" FromRole="contenido_multimedia_generos" ToRole="contenidos_multimedia" />
           <NavigationProperty Name="genero" Relationship="Self.FK_contenido_multimedia_generos_generos" FromRole="contenido_multimedia_generos" ToRole="generos" />
         </EntityType>
-        <EntityType Name="contenido_multimedia_temporadas">
-          <Key>
-            <PropertyRef Name="id_cm_temporada" />
-          </Key>
-          <Property Name="id_cm_temporada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nro_temporada" Type="Int32" />
-          <Property Name="id_contenido_multimedia" Type="Int32" />
-          <NavigationProperty Name="capitulos" Relationship="Self.FK_capitulos_contenido_multimedia_temporadas" FromRole="contenido_multimedia_temporadas" ToRole="capitulos" />
-          <NavigationProperty Name="contenidos_multimedia" Relationship="Self.FK_contenido_multimedia_temporadas_contenidos_multimedia" FromRole="contenido_multimedia_temporadas" ToRole="contenidos_multimedia" />
-        </EntityType>
         <EntityType Name="contenidos_multimedia">
           <Key>
             <PropertyRef Name="id_contenido_multimedia" />
@@ -709,7 +700,7 @@
           <Property Name="id_video" Type="Int32" />
           <Property Name="id_tcontenido_multimedia" Type="Int32" />
           <NavigationProperty Name="contenido_multimedia_generos" Relationship="Self.FK_contenido_multimedia_generos_contenidos_multimedia" FromRole="contenidos_multimedia" ToRole="contenido_multimedia_generos" />
-          <NavigationProperty Name="contenido_multimedia_temporadas" Relationship="Self.FK_contenido_multimedia_temporadas_contenidos_multimedia" FromRole="contenidos_multimedia" ToRole="contenido_multimedia_temporadas" />
+          <NavigationProperty Name="temporadas" Relationship="Self.FK_contenido_multimedia_temporadas_contenidos_multimedia" FromRole="contenidos_multimedia" ToRole="temporadas" />
           <NavigationProperty Name="tipos_contenido_multimedia" Relationship="Self.FK_contenidos_multimedia_tipos_contenido_multimedia" FromRole="contenidos_multimedia" ToRole="tipos_contenido_multimedia" />
           <NavigationProperty Name="video" Relationship="Self.FK_contenidos_multimedia_videos" FromRole="contenidos_multimedia" ToRole="videos" />
           <NavigationProperty Name="perfil_favoritos" Relationship="Self.FK_perfil_lista_contenidos_multimedia" FromRole="contenidos_multimedia" ToRole="perfil_favoritos" />
@@ -744,7 +735,7 @@
           </Key>
           <Property Name="id_estado_actividad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="volumen" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="minuto_reproduccion" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="segundo_reproduccion" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="velocidad" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="id_perfil_actividad" Type="Int32" />
           <Property Name="id_audio" Type="Int32" />
@@ -869,6 +860,17 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <EntityType Name="temporada">
+          <Key>
+            <PropertyRef Name="id_temporada" />
+          </Key>
+          <Property Name="id_temporada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nro_temporada" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="id_contenido_multimedia" Type="Int32" />
+          <NavigationProperty Name="capitulos" Relationship="Self.FK_capitulos_contenido_multimedia_temporadas" FromRole="temporadas" ToRole="capitulos" />
+          <NavigationProperty Name="contenidos_multimedia" Relationship="Self.FK_contenido_multimedia_temporadas_contenidos_multimedia" FromRole="temporadas" ToRole="contenidos_multimedia" />
+        </EntityType>
         <EntityType Name="tipos_contenido_multimedia">
           <Key>
             <PropertyRef Name="id_tcontenido_multimedia" />
@@ -907,7 +909,7 @@
           <Property Name="url_ubicacion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="url_imagen" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="url_trailer" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="duracion_minutos" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="duracion_segundos" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="capitulos" Relationship="Self.FK_capitulos_videos" FromRole="videos" ToRole="capitulos" />
           <NavigationProperty Name="contenidos_multimedia" Relationship="Self.FK_contenidos_multimedia_videos" FromRole="videos" ToRole="contenidos_multimedia" />
           <NavigationProperty Name="perfil_actividades" Relationship="Self.FK_perfil_actividades_videos" FromRole="videos" ToRole="perfil_actividades" />
@@ -951,14 +953,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_capitulos_contenido_multimedia_temporadas">
-          <End Role="contenido_multimedia_temporadas" Type="Self.contenido_multimedia_temporadas" Multiplicity="0..1" />
+          <End Role="temporadas" Type="Self.temporada" Multiplicity="0..1" />
           <End Role="capitulos" Type="Self.capitulo" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="contenido_multimedia_temporadas">
-              <PropertyRef Name="id_cm_temporada" />
+            <Principal Role="temporadas">
+              <PropertyRef Name="id_temporada" />
             </Principal>
             <Dependent Role="capitulos">
-              <PropertyRef Name="id_cm_temporada" />
+              <PropertyRef Name="id_temporada" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1000,12 +1002,12 @@
         </Association>
         <Association Name="FK_contenido_multimedia_temporadas_contenidos_multimedia">
           <End Role="contenidos_multimedia" Type="Self.contenidos_multimedia" Multiplicity="0..1" />
-          <End Role="contenido_multimedia_temporadas" Type="Self.contenido_multimedia_temporadas" Multiplicity="*" />
+          <End Role="temporadas" Type="Self.temporada" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="contenidos_multimedia">
               <PropertyRef Name="id_contenido_multimedia" />
             </Principal>
-            <Dependent Role="contenido_multimedia_temporadas">
+            <Dependent Role="temporadas">
               <PropertyRef Name="id_contenido_multimedia" />
             </Dependent>
           </ReferentialConstraint>
@@ -1226,11 +1228,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="netflixdbEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="netflixdbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="audios" EntityType="Self.audio" />
           <EntitySet Name="capitulos" EntityType="Self.capitulo" />
           <EntitySet Name="contenido_multimedia_generos" EntityType="Self.contenido_multimedia_generos" />
-          <EntitySet Name="contenido_multimedia_temporadas" EntityType="Self.contenido_multimedia_temporadas" />
           <EntitySet Name="contenidos_multimedia" EntityType="Self.contenidos_multimedia" />
           <EntitySet Name="cuenta_perfiles" EntityType="Self.cuenta_perfiles" />
           <EntitySet Name="cuentas" EntityType="Self.cuenta" />
@@ -1245,6 +1246,7 @@
           <EntitySet Name="propietarios" EntityType="Self.propietario" />
           <EntitySet Name="subtitulos" EntityType="Self.subtitulo" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="temporadas" EntityType="Self.temporada" />
           <EntitySet Name="tipos_contenido_multimedia" EntityType="Self.tipos_contenido_multimedia" />
           <EntitySet Name="video_audios" EntityType="Self.video_audios" />
           <EntitySet Name="video_subtitulos" EntityType="Self.video_subtitulos" />
@@ -1262,7 +1264,7 @@
             <End Role="video_audios" EntitySet="video_audios" />
           </AssociationSet>
           <AssociationSet Name="FK_capitulos_contenido_multimedia_temporadas" Association="Self.FK_capitulos_contenido_multimedia_temporadas">
-            <End Role="contenido_multimedia_temporadas" EntitySet="contenido_multimedia_temporadas" />
+            <End Role="temporadas" EntitySet="temporadas" />
             <End Role="capitulos" EntitySet="capitulos" />
           </AssociationSet>
           <AssociationSet Name="FK_capitulos_videos" Association="Self.FK_capitulos_videos">
@@ -1279,7 +1281,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_contenido_multimedia_temporadas_contenidos_multimedia" Association="Self.FK_contenido_multimedia_temporadas_contenidos_multimedia">
             <End Role="contenidos_multimedia" EntitySet="contenidos_multimedia" />
-            <End Role="contenido_multimedia_temporadas" EntitySet="contenido_multimedia_temporadas" />
+            <End Role="temporadas" EntitySet="temporadas" />
           </AssociationSet>
           <AssociationSet Name="FK_contenidos_multimedia_tipos_contenido_multimedia" Association="Self.FK_contenidos_multimedia_tipos_contenido_multimedia">
             <End Role="tipos_contenido_multimedia" EntitySet="tipos_contenido_multimedia" />
@@ -1359,7 +1361,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="netflixdbModelStoreContainer" CdmEntityContainer="netflixdbEntities1">
+        <EntityContainerMapping StorageEntityContainer="netflixdbModelStoreContainer" CdmEntityContainer="netflixdbEntities">
           <EntitySetMapping Name="audios">
             <EntityTypeMapping TypeName="netflixdbModel.audio">
               <MappingFragment StoreEntitySet="audios">
@@ -1374,7 +1376,7 @@
               <MappingFragment StoreEntitySet="capitulos">
                 <ScalarProperty Name="id_capitulo" ColumnName="id_capitulo" />
                 <ScalarProperty Name="nro_capitulo" ColumnName="nro_capitulo" />
-                <ScalarProperty Name="id_cm_temporada" ColumnName="id_cm_temporada" />
+                <ScalarProperty Name="id_temporada" ColumnName="id_temporada" />
                 <ScalarProperty Name="id_video" ColumnName="id_video" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1384,15 +1386,6 @@
               <MappingFragment StoreEntitySet="contenido_multimedia_generos">
                 <ScalarProperty Name="id_cm_genero" ColumnName="id_cm_genero" />
                 <ScalarProperty Name="id_genero" ColumnName="id_genero" />
-                <ScalarProperty Name="id_contenido_multimedia" ColumnName="id_contenido_multimedia" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="contenido_multimedia_temporadas">
-            <EntityTypeMapping TypeName="netflixdbModel.contenido_multimedia_temporadas">
-              <MappingFragment StoreEntitySet="contenido_multimedia_temporadas">
-                <ScalarProperty Name="id_cm_temporada" ColumnName="id_cm_temporada" />
-                <ScalarProperty Name="nro_temporada" ColumnName="nro_temporada" />
                 <ScalarProperty Name="id_contenido_multimedia" ColumnName="id_contenido_multimedia" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1435,7 +1428,7 @@
               <MappingFragment StoreEntitySet="estado_actividades">
                 <ScalarProperty Name="id_estado_actividad" ColumnName="id_estado_actividad" />
                 <ScalarProperty Name="volumen" ColumnName="volumen" />
-                <ScalarProperty Name="minuto_reproduccion" ColumnName="minuto_reproduccion" />
+                <ScalarProperty Name="segundo_reproduccion" ColumnName="segundo_reproduccion" />
                 <ScalarProperty Name="velocidad" ColumnName="velocidad" />
                 <ScalarProperty Name="id_perfil_actividad" ColumnName="id_perfil_actividad" />
                 <ScalarProperty Name="id_audio" ColumnName="id_audio" />
@@ -1549,6 +1542,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="temporadas">
+            <EntityTypeMapping TypeName="netflixdbModel.temporada">
+              <MappingFragment StoreEntitySet="temporadas">
+                <ScalarProperty Name="id_temporada" ColumnName="id_temporada" />
+                <ScalarProperty Name="nro_temporada" ColumnName="nro_temporada" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_contenido_multimedia" ColumnName="id_contenido_multimedia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tipos_contenido_multimedia">
             <EntityTypeMapping TypeName="netflixdbModel.tipos_contenido_multimedia">
               <MappingFragment StoreEntitySet="tipos_contenido_multimedia">
@@ -1584,7 +1587,7 @@
                 <ScalarProperty Name="url_ubicacion" ColumnName="url_ubicacion" />
                 <ScalarProperty Name="url_imagen" ColumnName="url_imagen" />
                 <ScalarProperty Name="url_trailer" ColumnName="url_trailer" />
-                <ScalarProperty Name="duracion_minutos" ColumnName="duracion_minutos" />
+                <ScalarProperty Name="duracion_segundos" ColumnName="duracion_segundos" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

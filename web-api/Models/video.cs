@@ -30,7 +30,7 @@ namespace web_api.Models
         public string url_ubicacion { get; set; }
         public string url_imagen { get; set; }
         public string url_trailer { get; set; }
-        public Nullable<decimal> duracion_minutos { get; set; }
+        public Nullable<decimal> duracion_segundos { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<capitulo> capitulos { get; set; }

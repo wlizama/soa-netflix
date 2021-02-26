@@ -18,7 +18,7 @@ namespace web_api.Models
         public contenidos_multimedia()
         {
             this.contenido_multimedia_generos = new HashSet<contenido_multimedia_generos>();
-            this.contenido_multimedia_temporadas = new HashSet<contenido_multimedia_temporadas>();
+            this.temporadas = new HashSet<temporada>();
             this.perfil_favoritos = new HashSet<perfil_favoritos>();
         }
     
@@ -32,7 +32,7 @@ namespace web_api.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<contenido_multimedia_generos> contenido_multimedia_generos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<contenido_multimedia_temporadas> contenido_multimedia_temporadas { get; set; }
+        public virtual ICollection<temporada> temporadas { get; set; }
         public virtual tipos_contenido_multimedia tipos_contenido_multimedia { get; set; }
         public virtual video video { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
