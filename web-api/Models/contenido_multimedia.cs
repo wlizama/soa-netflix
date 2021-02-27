@@ -27,6 +27,8 @@ namespace web_api.Models
                     anho_publicacion = conm.anho_publicacion,
                     director = conm.director,
                     url_trailer = conm.video.url_trailer,
+                    url_imagen = conm.video.url_imagen,
+                    duracion_segundos = conm.video.duracion_segundos,
                     generos = (from conmgen in bd.contenido_multimedia_generos
                                join gen in bd.generos
                                on conmgen.id_genero equals gen.id_genero

@@ -13,7 +13,9 @@ namespace web_api.Transfers
         public Nullable<int> edad_clasificacion { get; set; }
         public Nullable<int> anho_publicacion { get; set; }
         public string url_trailer { get; set; }
+        public string url_imagen { get; set; }
         public string director { get; set; }
+        public Nullable<decimal> duracion_segundos { get; set; }
 
         public virtual ICollection<generodto> generos { get; set; }
     }

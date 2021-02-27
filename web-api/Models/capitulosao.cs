@@ -46,40 +46,31 @@ namespace web_api.Models
             return list;
         }
 
-        public static IEnumerable<capituloseriesubdto> getListaSubtitulosCapituloSerie(int id_capitulo)
+        public static capituloseriesubdto getListaSubtitulosCapituloSerie(int id_capitulo)
         {
             //http://localhost:64996/api/ContenidoReproduccion/getListaSubtitulosCapituloSerie
 
             netflixdbEntities bd = new netflixdbEntities();
 
-            var list = (
-                from cap in bd.capitulos
+            var list = new capituloseriesubdto()
+            {
+                subtitulos = (
+                from vs in bd.video_subtitulos
+                join sub in bd.subtitulos
+                on vs.id_subtitulo equals sub.id_subtitulo
+                join vi in bd.videos
+                on vs.id_video equals vi.id_video
+                join cap in bd.capitulos
+                on vi.id_video equals cap.id_video
                 where cap.id_capitulo == id_capitulo
-                select new capituloseriesubdto()
+                select new subtitulodto()
                 {
-                    id_capitulo = cap.id_capitulo,
-                    nro_capitulo = cap.nro_capitulo,
-                    titulo = cap.video.titulo,
-                    descripcion = cap.video.descripcion,
-                    url_ubicacion = cap.video.url_ubicacion,
-                    url_imagen = cap.video.url_imagen,
-                    url_trailer = cap.video.url_trailer,
-                    duracion_segundos = cap.video.duracion_segundos,
-                    subtitulos = (from vs in bd.video_subtitulos
-                                  join sub in bd.subtitulos
-                                  on vs.id_subtitulo equals sub.id_subtitulo
-                                  where vs.id_video == cap.id_video
-                                  select new subtitulodto()
-                                  {
-                                      id_subtitulo = sub.id_subtitulo,
-                                      url_ubicacion = sub.url_ubicacion,
-                                      nombre_idioma = sub.idioma.nombre
-                                  }).ToList()
-                }
-            );
-
+                    id_subtitulo = sub.id_subtitulo,
+                    url_ubicacion = sub.url_ubicacion,
+                    nombre_idioma = sub.idioma.nombre
+                }).ToList()
+            };
             return list;
         }
-
     }
 }

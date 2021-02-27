@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using web_api.Models;
 using web_api.Transfers;
 
 namespace web_api.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ContenidoReproduccionController : ApiController
     {
         [HttpGet]
@@ -27,7 +29,8 @@ namespace web_api.Controllers
 
         [HttpGet]
         [Route("api/ContenidoReproduccion/getListaSubtitulosCapituloSerie")]
-        public IEnumerable<capituloseriesubdto> getListaSeries(int id_capitulo)
+        public capituloseriesubdto getListaSubtitulosCapituloSerie(int id_capitulo)
+
         {
             return capitulo.getListaSubtitulosCapituloSerie(id_capitulo);
         }

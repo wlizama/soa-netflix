@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SOA Netflix</title>
+</head>
+<body>
+    <div id="app" class="container">
+        <div class="my-4">
+            <button type="button" class="btn btn-primary" @click="getListaSeries">Buscar series</button>
+        </div>
+        <div>
+            <h2>Lista de series</h2>
+            <div>
+                <div v-for="serie in series" class="py-4 border-bottom d-flex w-100 justify-content-between">
+                    <img class="w-25" :src="serie.url_imagen" />
+                    <div class="ml-2">
+                        <div class="d-flex">
+                            <h4 class="mr-auto">{{serie.titulo}}</h4>
+                            <span class="text-muted">{{serie.anho_publicacion}}</span>
+                        </div>
+                        <p>{{serie.descripcion}}</p>
+                        <div>
+                            <span class="badge badge-secondary mr-2" :title="'Para mayores de ' + serie.edad_clasificacion + ' años'">{{serie.edad_clasificacion}}+</span>
+                            <span class="mr-2 text-muted">{{serie.generos.reduce((ant, cur) => ant.concat(cur.nombre), []).join(", ")}}</span>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary float-right"
+                                    @click="mostarModal(serie.id_contenido_multimedia)">
+                                capitulos >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modalCapitulosSerie" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Capitulos</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex align-items-center" v-for="capitulo_serie in capitulos_serie_selected">
+                                    <img class="w-25" :src="capitulo_serie.url_imagen" style="width: 150px !important; height: 100px !important" />
+                                    <div class="ml-2">
+                                        <div>
+                                            <h5>Temporada {{capitulo_serie.temporada.nro_temporada}} - {{capitulo_serie.titulo}}</h5>
+                                            <p>{{capitulo_serie.descripcion}}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted">{{secondsToString(capitulo_serie.duracion_segundos)}}</span>
+                                            <div class="float-right">
+                                                <span class="badge badge-secondary mr-2" v-for="subtitulo in capitulo_serie.subtitulos">{{subtitulo.nombre_idioma}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script>
+
+        $('#modalCapitulosSerie').modal({
+            show: false
+        })
+
+        new Vue({
+            el: "#app",
+            data: {
+                series: [],
+                id_contenido_multimedia_selected: null,
+                capitulos_serie_selected: []
+            },
+            methods: {
+                // xhr methods
+                getListaSeries: function () {
+                    var url = "http://localhost:64996/api/ContenidoReproduccion/getListaSeries";
+                    this.$http.get(url).then(function (response) {
+                        this.series = response.body;
+                    });
+                },
+                getListaCapitulosSerie: function (id_contenido_multimedia) {
+                    var httpget = this.$http;
+
+                    var url = "http://localhost:64996/api/ContenidoReproduccion/getListaCapitulosSerie?id_contenido_multimedia=" + id_contenido_multimedia;
+                    httpget.get(url).then(async function (response) {
+                        //this.capitulos_serie_selected = response.body;
+                        var temp_capitulos_serie_selected = response.body;
+
+                        async function getListaSubtitulosCapituloSerie(temp_capitulos_serie_selected) {
+                            for (var i = 0; i < temp_capitulos_serie_selected.length; i++) {
+                                var url02 = "http://localhost:64996/api/ContenidoReproduccion/getListaSubtitulosCapituloSerie?id_capitulo=" + temp_capitulos_serie_selected[i].id_capitulo;
+                                await httpget.get(url02).then(function (response02) {
+                                    temp_capitulos_serie_selected[i].subtitulos = response02.body.subtitulos;
+                                });
+                            }
+                        }
+
+                        await getListaSubtitulosCapituloSerie(temp_capitulos_serie_selected)
+
+                        this.capitulos_serie_selected = temp_capitulos_serie_selected;
+                        console.log(temp_capitulos_serie_selected)
+                    });
+                },
+                // functional methods
+                mostarModal: function (id_contenido_multimedia_selected) {
+                    this.id_contenido_multimedia_selected = id_contenido_multimedia_selected
+                    $('#modalCapitulosSerie').modal('show');
+                    this.getListaCapitulosSerie(id_contenido_multimedia_selected)
+                },
+                secondsToString:  function(seconds) {
+                    var hour = Math.floor(seconds / 3600);
+                    hour = (hour < 10) ? '0' + hour : hour;
+                    var minute = Math.floor((seconds / 60) % 60);
+                    minute = (minute < 10) ? '0' + minute : minute;
+                    var second = seconds % 60;
+                    second = (second < 10) ? '0' + second : second;
+                    return hour + ':' + minute + ':' + second;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
