@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <title>SOA Netflix</title>
 </head>
-<body>
+<body style="background: #000; color: #FFF">
     <div id="app" class="container">
         <div class="my-4">
-            <button type="button" class="btn btn-primary" @click="getListaSeries">Buscar series</button>
+            <img src="https://logodownload.org/wp-content/uploads/2014/10/netflix-logo-2-1.png" style="width: 200px" />
         </div>
         <div>
             <h2>Lista de series</h2>
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div id="modalCapitulosSerie" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+            <div id="modalCapitulosSerie" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" style="color: #000">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -137,6 +137,9 @@
                     second = (second < 10) ? '0' + second : second;
                     return hour + ':' + minute + ':' + second;
                 }
+            },
+            beforeMount: function() {
+                this.getListaSeries()
             }
         })
     </script>
