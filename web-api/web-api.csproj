@@ -259,6 +259,7 @@
     <Compile Include="Transfers\capituloseriedto.cs" />
     <Compile Include="Transfers\capituloseriesubdto.cs" />
     <Compile Include="Transfers\contenidomultimediagenerodto.cs" />
+    <Compile Include="Transfers\contenidomultimediaseriedto.cs" />
     <Compile Include="Transfers\generodto.cs" />
     <Compile Include="Transfers\subtitulodto.cs" />
     <Compile Include="Transfers\temporadadto.cs" />

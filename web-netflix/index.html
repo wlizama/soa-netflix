@@ -6,11 +6,11 @@
 </head>
 <body style="background: #000; color: #FFF">
     <div id="app" class="container">
-        <div class="my-4">
+        <div class="text-center mt-4">
             <img src="https://logodownload.org/wp-content/uploads/2014/10/netflix-logo-2-1.png" style="width: 200px" />
         </div>
         <div>
-            <h2>Lista de series</h2>
+            <h2 class="text-info">Lista de series</h2>
             <div>
                 <div v-for="serie in series" class="py-4 border-bottom d-flex w-100 justify-content-between">
                     <img class="w-25" :src="serie.url_imagen" />

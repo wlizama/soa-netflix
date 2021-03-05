@@ -67,6 +67,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="serie-admin.html" />
+    <Content Include="series_lista-admin.html" />
     <Content Include="index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
