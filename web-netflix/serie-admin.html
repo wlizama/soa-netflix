@@ -118,8 +118,10 @@
                 },
                 guardarSerie: function () {
                     if (this.op == "edit") { // post
-
-
+                        var url = "http://localhost:64996/api/ContenidoReproduccion/modificarSerie?id_contenido_multimedia=" + this.id_contenido_multimedia
+                        this.$http.post(url, this.serie).then(function (response) {
+                            this.serie = response.body;
+                        });
                     }
                     else if (this.op == "new") { // put
                         var url = "http://localhost:64996/api/ContenidoReproduccion/insertSerie"

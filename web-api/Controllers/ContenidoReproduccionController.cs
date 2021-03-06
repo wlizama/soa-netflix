@@ -54,5 +54,19 @@ namespace web_api.Controllers
         {
             return contenidos_multimedia.insertSerie(cms);
         }
+
+        [HttpPost]
+        [Route("api/ContenidoReproduccion/modificarSerie")]
+        public contenidomultimediaseriedto modificarSerie(int id_contenido_multimedia, contenidomultimediaseriedto cms_new)
+        {
+            return contenidos_multimedia.modificarSerie(id_contenido_multimedia, cms_new);
+        }
+
+        [HttpDelete]
+        [Route("api/ContenidoReproduccion/eliminarSerie")]
+        public bool eliminarSerie(int id_contenido_multimedia)
+        {
+            return contenidos_multimedia.eliminarSerie(id_contenido_multimedia);
+        }
     }
 }

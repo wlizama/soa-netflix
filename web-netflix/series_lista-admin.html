@@ -64,7 +64,15 @@
                     });
                 },
                 eliminarSerie: function (id_contenido_multimedia) {
-                    console.log(id_contenido_multimedia)
+                    var rpt_confirm = confirm("¿Realmente desea eliminar esta serie?");
+
+                    if (rpt_confirm) {
+                        var url = "http://localhost:64996/api/ContenidoReproduccion/eliminarSerie?id_contenido_multimedia=" + id_contenido_multimedia;
+                        this.$http.delete(url).then(function (response) {
+                            console.log(response.body);
+                            this.getListaSeries();
+                        });
+                    }
                 }
             },
             beforeMount: function() {

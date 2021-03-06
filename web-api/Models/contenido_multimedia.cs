@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using web_api.Transfers;
@@ -51,7 +52,38 @@ namespace web_api.Models
                 id_video = objVideo.id_video,
                 id_tcontenido_multimedia = 2
             };
+        }
 
+        public static contenidomultimediaseriedto modificarSerie(int id_contenido_multimedia, contenidomultimediaseriedto cms_new)
+        {
+            netflixdbEntities bd = new netflixdbEntities();
+            contenidos_multimedia cm = bd.contenidos_multimedia.Find(id_contenido_multimedia);
+
+            cm.video.titulo = cms_new.titulo;
+            cm.video.descripcion = cms_new.descripcion;
+            cm.video.url_ubicacion = cms_new.url_ubicacion;
+            cm.video.url_imagen = cms_new.url_imagen;
+            cm.video.url_trailer = cms_new.url_trailer;
+            cm.video.duracion_segundos = cms_new.duracion_segundos;
+            cm.edad_clasificacion = cms_new.edad_clasificacion;
+            cm.anho_publicacion = cms_new.anho_publicacion;
+            cm.director = cms_new.director;
+
+            bd.Entry(cm).State = EntityState.Modified;
+            bd.SaveChanges();
+
+            return cms_new;
+        }
+
+        public static bool eliminarSerie(int id_contenido_multimedia)
+        {
+            netflixdbEntities bd = new netflixdbEntities();
+            contenidos_multimedia cm = bd.contenidos_multimedia.Find(id_contenido_multimedia);
+
+            bd.contenidos_multimedia.Remove(cm);
+            bd.SaveChanges();
+
+            return true;
         }
 
         public static contenidomultimediaseriedto getSerie(int id_contenido_multimedia)
