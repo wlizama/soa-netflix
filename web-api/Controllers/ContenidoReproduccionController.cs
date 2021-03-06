@@ -47,5 +47,12 @@ namespace web_api.Controllers
         {
             return contenidos_multimedia.getSerie(id_contenido_multimedia);
         }
+
+        [HttpPut]
+        [Route("api/ContenidoReproduccion/insertSerie")]
+        public contenidomultimediaseriedto insertSerie(contenidomultimediaseriedto cms)
+        {
+            return contenidos_multimedia.insertSerie(cms);
+        }
     }
 }

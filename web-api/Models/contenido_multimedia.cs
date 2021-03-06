@@ -9,7 +9,7 @@ namespace web_api.Models
     public partial class contenidos_multimedia
     {
 
-        public static int insertSerie(contenidomultimediaseriedto cms)
+        public static contenidomultimediaseriedto insertSerie(contenidomultimediaseriedto cms)
         {
             netflixdbEntities bd = new netflixdbEntities();
             video objVideo = new video()
@@ -36,9 +36,21 @@ namespace web_api.Models
             bd.contenidos_multimedia.Add(cm);
             bd.SaveChanges();
 
-            var id_contenido_multimedia = cm.id_contenido_multimedia;
-
-            return id_contenido_multimedia;
+            return new contenidomultimediaseriedto()
+            {
+                id_contenido_multimedia = cm.id_contenido_multimedia,
+                titulo = objVideo.titulo,
+                descripcion = objVideo.descripcion,
+                url_ubicacion = objVideo.url_ubicacion,
+                url_imagen = objVideo.url_imagen,
+                url_trailer = objVideo.url_trailer,
+                duracion_segundos = objVideo.duracion_segundos,
+                edad_clasificacion = cm.edad_clasificacion,
+                anho_publicacion = cm.anho_publicacion,
+                director = cm.director,
+                id_video = objVideo.id_video,
+                id_tcontenido_multimedia = 2
+            };
 
         }
 

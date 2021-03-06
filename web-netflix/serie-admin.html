@@ -6,20 +6,81 @@
 </head>
 <body style="background: #000; color: #FFF">
     <div id="app" class="container my-4">
-        <div class="d-flex w-100 justify-content-between align-items-center">
-            <h2 class="text-info d-inline">Serie</h2>
-            <span class="text-muted">( {{lblOp}} )</span>
+        <div class="text-center my-4">
+            <img src="https://logodownload.org/wp-content/uploads/2014/10/netflix-logo-2-1.png" style="width: 200px" />
+            <h5 class="text-muted">Admin</h5>
         </div>
+        <div class="my-2">
+            <a href="series_lista-admin.html"
+               class="btn btn-sm btn-outline-secondary mr-4">
+                < Cancelar
+            </a>
+
+            <button type="button"
+                    class="btn btn-sm btn-success"
+                    @click="guardarSerie()">
+                Guardar
+            </button>
+
+            <span class="text-muted float-right">( {{lblOp}} )</span>
+        </div>
+
+        <h2 class="text-info py-2">Serie</h2>
+
         <form>
             <div class="form-group">
-                <label for="formGroupExampleInput">Example label</label>
-                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+                <label for="txtTitulo">Titulo</label>
+                <input type="text" class="form-control" id="txtTitulo" v-model="serie.titulo" />
             </div>
             <div class="form-group">
-                <label for="formGroupExampleInput2">Another label</label>
-                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                <label for="txtDescripcion">Descripcion</label>
+                <textarea class="form-control" id="txtDescripcion" v-model="serie.descripcion" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="txtDirector">Director</label>
+                <input type="text" class="form-control" id="txtDirector" v-model="serie.director" />
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="txtAnhoPublicacion">Año publicación</label>
+                    <input type="number" class="form-control text-right" id="txtAnhoPublicacion" v-model="serie.anho_publicacion">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="txtEdadClasificacion">Edad clasificación</label>
+                    <input type="number" class="form-control text-right" id="txtEdadClasificacion" v-model="serie.edad_clasificacion">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="txtDuracion">Duracion minutos</label>
+                    <input type="url" class="form-control text-right" id="txtDuracion" v-model="serie.duracion_segundos">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="txtURLImagen">URL imagen</label>
+                <input type="text" class="form-control" id="txtURLImagen" v-model="serie.url_imagen" />
+            </div>
+            <div class="form-group">
+                <label for="txtURLTrailer">URL trailer</label>
+                <input type="text" class="form-control" id="txtURLTrailer" v-model="serie.url_trailer" />
+            </div>
+            <div class="form-group">
+                <label for="txtURLUbicacion">URL Ubicación</label>
+                <input type="text" class="form-control" id="txtURLUbicacion" v-model="serie.url_ubicacion" />
             </div>
         </form>
+        <div v-if="op == 'edit'">
+            <h5>Lista de capitulos</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item list-group-item-dark d-flex align-items-center" v-for="capitulo in capitulos">
+                    <img class="w-25" :src="capitulo.url_imagen" style="width: 150px !important; height: 100px !important" />
+                    <div class="ml-2">
+                        <div>
+                            <h5>Temporada {{capitulo.temporada.nro_temporada}} - {{capitulo.titulo}}</h5>
+                            <p>{{capitulo.descripcion}}</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -29,40 +90,61 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
 
-    new Vue({
-        el: "#app",
-        data: {
-            lblOp: "",
-            id_contenido_multimedia: null,
-            serie: {}
-        },
-        methods: {
-            // xhr methods
-            getSerie: function (id_contenido_multimedia) {
-                var url = "http://localhost:64996/api/ContenidoReproduccion/getSerie?id_contenido_multimedia=" + id_contenido_multimedia;
-                this.$http.get(url).then(function (response) {
-                    this.serie = response.body;
-                });
-            }
-        },
-        beforeMount: function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            var op = urlParams.get('op');
-            if (op) {
+        new Vue({
+            el: "#app",
+            data: {
+                op: null,
+                lblOp: "",
+                id_contenido_multimedia: null,
+                serie: {},
+                capitulos: []
+            },
+            methods: {
+                // xhr methods
+                getSerie: function (id_contenido_multimedia) {
+                    var url = "http://localhost:64996/api/ContenidoReproduccion/getSerie?id_contenido_multimedia=" + id_contenido_multimedia;
+                    this.$http.get(url).then(function (response) {
+                        this.serie = response.body;
+                        this.getListaCapitulos(response.body.id_contenido_multimedia)
+                    });
+                },
+                getListaCapitulos: function (id_contenido_multimedia) {
+                    var url = "http://localhost:64996/api/ContenidoReproduccion/getListaCapitulosSerie?id_contenido_multimedia=" + id_contenido_multimedia;
+                    this.$http.get(url).then(function (response) {
+                        this.capitulos = response.body;
+                    });
+                },
+                guardarSerie: function () {
+                    if (this.op == "edit") { // post
 
-                if (op == "edit") {
-                    this.lblOp = "MODIFICAR"
-                    this.id_contenido_multimedia = urlParams.get('id_contenido_multimedia');
-                    this.getSerie(urlParams.get('id_contenido_multimedia'));
+
+                    }
+                    else if (this.op == "new") { // put
+                        var url = "http://localhost:64996/api/ContenidoReproduccion/insertSerie"
+                        this.$http.put(url, this.serie).then(function (response) {
+                            this.op = "edit";
+                            this.lblOp = "MODIFICAR"
+                            this.id_contenido_multimedia = response.body.id_contenido_multimedia;
+                        });
+                    }
                 }
-                else if (op == "new") {
-                    this.lblOp = "NUEVO"
+            },
+            beforeMount: function () {
+                this.op = urlParams.get('op')
+                if (urlParams.get('op')) {
+                    if (urlParams.get('op') == "edit") {
+                        this.lblOp = "MODIFICAR"
+                        this.id_contenido_multimedia = urlParams.get('id_contenido_multimedia');
+                        this.getSerie(urlParams.get('id_contenido_multimedia'));
+                    }
+                    else if (urlParams.get('op') == "new") {
+                        this.lblOp = "NUEVO"
+                    }
                 }
-
             }
-        }
-    })
+        })
     </script>
 </body>
 </html>
